@@ -1,0 +1,9 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	worktree = /root/.tmp-checkout
+[remote "origin"]
+	url = git://github.com/Metalab/LazzzorAuth.git
+[receive]
+	denycurrentbranch = ignore

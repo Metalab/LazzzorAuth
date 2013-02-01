@@ -1,0 +1,11 @@
+#!/bin/sh
+git checkout -f
+echo "INSERTING SECRET URLS"
+/root/replacesecret.sh
+echo "UNPACKING TO PROPER LOCATIONS"
+cp -rf /root/.tmp-checkout/embedded/* /
+echo "REBOOTING (well OK, not yet)"
+echo "C2" > /dev/ttyACM0 # RED DISPLAY, ALERT ALERT
+echo "ARebooting..." > /dev/ttyACM0
+echo "B" > /dev/ttyACM0
+reboot

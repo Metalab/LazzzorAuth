@@ -14,3 +14,6 @@ http://metalab.at/wiki/Lazzzorauth
  - startup scripts
  - node.js server
  - "cronjob" for keylist updates
+ - haxx0red git hooks and configs
+
+
