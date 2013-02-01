@@ -1,5 +1,3 @@
-# sqlite3 lazzzorauth.sqlite3 < db_layout.sqlite
-
 
 CREATE TABLE events (
  rowid, 
@@ -26,7 +24,3 @@ CREATE TABLE jobs (
 );
 
 
-
-INSERT INTO jobs VALUES ("",datetime("now"),"00:42:23","Overflo","33-000...","1",datetime("now"),"STANDARD","0.50","23.42","25.00","0");
-
-INSERT INTO events VALUES ("",datetime("now"),"LOGIN","Overflo","33-000...","blah");
