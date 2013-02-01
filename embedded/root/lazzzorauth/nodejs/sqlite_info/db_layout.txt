@@ -27,25 +27,6 @@ CREATE TABLE jobs (
 
 
 
-CREATE TABLE lazzzorjobs (
- rowid, 
- timestamp TEXT, 
- duration TEXT, 
- owner TEXT,
- buttonid TEXT,
- logged_in INTEGER,
- last_log_in TEXT,
- comment TEXT,
- minuteprice TEXT,
- total TEXT,
- custom_total TEXT,
- external_job INTEGER
-);
-
-
-
-INSERT INTO lazzzorjobs VALUES ("",datetime("now"),"00:42:23","Overflo","33-000...","1",datetime("now"),"STANDARD","0.50","23.42","25.00","0");
-
 INSERT INTO jobs VALUES ("",datetime("now"),"00:42:23","Overflo","33-000...","1",datetime("now"),"STANDARD","0.50","23.42","25.00","0");
 
 INSERT INTO events VALUES ("",datetime("now"),"LOGIN","Overflo","33-000...","blah");
