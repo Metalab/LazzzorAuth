@@ -1,3 +1,10 @@
+/* Metalab Lazzzorauth
+
+See https://metalab.at/wiki/Lazzzorauth for more info.
+
+Author: overflo
+Contributors: mzeltner */
+
 var tty="/dev/ttyACM0";
 var keyfile="/root/lazzzorauth/files/keylist.current";
 var externalprice='1.50';
@@ -11,18 +18,29 @@ var internalprice='1.00';
 /* no need to touch below here */
 
 
-
 var fs = require("fs");
 var sys = require("util");
-
 var sqlite3 = require('sqlite3').verbose();
 var db = new sqlite3.Database('lazzzorauth.sqlite3');
 
-var serialport = require("serialport");
-var SerialPort = serialport.SerialPort; // localize object constructor
-var sp = new SerialPort(tty, {
-    parser: serialport.parsers.readline("\n")
-});
+// We always want SQLite, but for UI development purposes we don't need serial
+// or firewall interactions
+
+var firewall = true;
+try {
+    var serialport = require("serialport");
+    var SerialPort = serialport.SerialPort; // localize object constructor
+    var sp = new SerialPort(tty, {
+        parser: serialport.parsers.readline("\n")
+    });
+} catch (err) {
+    console.log("No serialport available");
+    // Make a dummy serial
+    var sp = new Object();
+    sp.on = function() {};
+    sp.write = function() {};
+    firewall = false;
+}
 
 
 
@@ -51,7 +69,6 @@ var BLUE =4;
 
 
 /* GO GO GO!!! */
-
 
 
  firewall_off();
@@ -494,39 +511,36 @@ function laserjob_finished()
 
 // do some network magic
 
-function firewall_on()
-{
- lazzzor_active=1;
- // DB ENTRY HERE
- save_event_in_db("FIREWALLON",logged_in_user,logged_in_id,"");
+function firewall_on() {
+    if (firewall) {
+        lazzzor_active=1;
+        // DB ENTRY HERE
+        save_event_in_db("FIREWALLON",logged_in_user,logged_in_id,"");
 
-fs.writeFile("/proc/sys/net/ipv4/ip_forward", "1", function(err) {
-    if(err) {
-        console.log("ERROR WITH PORTFORWARD" + err);
-    } else {
-        console.log("PORTFORWARD ENABLED");
+        fs.writeFile("/proc/sys/net/ipv4/ip_forward", "1", function(err) {
+            if(err) {
+                console.log("ERROR WITH PORTFORWARD" + err);
+            } else {
+                console.log("PORTFORWARD ENABLED");
+            }
+        }); 
     }
-}); 
-
-
 }
 
-function firewall_off()
-{
- lazzzor_active=0;
-   // DB ENTRY HERE
- save_event_in_db("FIREWALLOFF",last_logged_in_user,last_logged_in_id,"");
+function firewall_off() {
+    if (firewall) {
+        lazzzor_active=0;
+        // DB ENTRY HERE
+        save_event_in_db("FIREWALLOFF",last_logged_in_user,last_logged_in_id,"");
 
-
-
-fs.writeFile("/proc/sys/net/ipv4/ip_forward", "0", function(err) {
-    if(err) {
-        console.log("ERROR WITH PORTFORWARD" + err);
-    } else {
-        console.log("PORTFORWARD DISABLED");
+        fs.writeFile("/proc/sys/net/ipv4/ip_forward", "0", function(err) {
+            if(err) {
+                console.log("ERROR WITH PORTFORWARD" + err);
+            } else {
+                console.log("PORTFORWARD DISABLED");
+            }
+        });
     }
-});
-
 }
 
 

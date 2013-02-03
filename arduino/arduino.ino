@@ -63,7 +63,9 @@ byte BACKLIGHT_PIN_RED = A1;
 byte BACKLIGHT_PIN_GREEN = A0;
 byte BACKLIGHT_PIN_BLUE = A2;
 
-// if sensorvalue above this, we are fireing a lazzzor
+// 2013-02-02: standard values: off: ~530 on: ~385
+// if sensorvalue below threshold, lazzzor has been fired
+// value is jumping by 145, so we take 385+(145/2)
 int lasersensorthreshold=450;
 // becomes millis() once job started
 long laserjobrunning=0;
