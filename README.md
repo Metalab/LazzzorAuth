@@ -1,9 +1,9 @@
 LazzzorAuth
 ===========
 
-Lazzzor Authentication @ metalab
+Lazzzor Authentication @ Metalab
 
-http://metalab.at/wiki/Lazzzorauth
+https://metalab.at/wiki/Lazzzorauth
 
 /arduino contains the MCU part 
   - read iButton
