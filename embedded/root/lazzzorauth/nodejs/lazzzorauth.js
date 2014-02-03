@@ -25,11 +25,15 @@ var fs = require("fs");
 var sys = require("util");
 var sqlite3 = require('sqlite3').verbose();
 var http = require('http');
+// clone thin-orm from https://github.com/mzeltner/thin-orm/ to get rid of
+// unncessary console.log output
+var orm = require('thin-orm');
 var db = new sqlite3.Database('lazzzorauth.sqlite3');
+var driver = orm.createDriver('sqlite', { db: db, logger: function(){} });
 
-// We always want SQLite and a http server, but during UI development we don't
-// have a serial or firewall interactions -- also we listen on different ports
-// when we're in a production environment
+// We always want SQLite, thin-orm and a http server, but during UI development
+// we don't have a serial or firewall interactions -- also we listen on
+// port 80 when we're in a production environment
 var firewall = true;
 var listen = 80;
 try {
@@ -69,7 +73,6 @@ var lazzzor_start_timestamp = 0;
 
 /* HTTP Interface
 --------------------------------------------------------------- */
-
 function respond(req, res) {
 
   if(req.method = 'GET') {
@@ -143,6 +146,33 @@ function get_timestamp() {
 
 /* Database
 --------------------------------------------------------------- */
+orm.table('jobs')
+   .columns('rowid', 'timestamp', 'duration', 'owner', 'buttonid', 'logged_in',
+            'last_log_in', 'comment', 'minuteprice', 'total', 'custom_total',
+            'external_job');
+
+orm.table('events')
+   .columns('rowid', 'timestamp', 'event', 'owner', 'buttonid', 'comment')
+
+var jobs = orm.createClient(driver, 'jobs');
+var events = orm.createClient(driver, 'events');
+
+var data = {
+  err: 0,
+  rows: [],
+  count: 0
+}
+
+function orm_cb(err, results) {
+  data.err = err;
+  data.rows = results.rows;
+  data.count = results.count;
+}
+
+// thin-orm Example
+// jobs.findMany({criteria: { owner: 'OVERFLO' } }, orm_cb);
+// events
+
 function pad(num) {
   var s = num + "";
   while(s.length < 2) s = "0" + s;
