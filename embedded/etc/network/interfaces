@@ -1,15 +1,7 @@
 auto lo
 iface lo inet loopback
 
-
-
-
-
-
-
-
-
-# das insterface das mit dem lazzzor verbunden ist
+# das interface das mit dem lazzzor verbunden ist
 auto eth0:1
 iface eth0:1 inet static
         name Ethernet alias LAN card
@@ -18,16 +10,13 @@ iface eth0:1 inet static
         broadcast 10.254.253.3
         network 10.254.253.0 
 
-
 #  die alte IP vom lazzzor
 #  das ist jetzt die primäre IP vom lazzzorauth
 auto eth0:0
 iface eth0:0 inet static
 	name Ethernet alias LAN card
 	address 10.20.30.27
-	netmask 255.255.255.0
-	broadcast 10.20.30.255
-	network 10.20.30.0
+	netmask 255.255.0.0
 	gateway 10.20.30.1
 
 
